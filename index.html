@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Letter A - A True Love Meter</title>
+<title>Letter A - Guess</title>
 
 <style>
 body {
@@ -12,46 +12,20 @@ body {
     text-align: center;
     background: linear-gradient(135deg, #6b21a8, #ec4899);
     color: white;
-    overflow: hidden;
-}
-
-.container {
-    padding: 60px 20px;
+    padding-top: 80px;
 }
 
 h1 {
     font-size: 3em;
 }
 
-h2 {
-    font-weight: normal;
-    margin-bottom: 30px;
-}
-
-.meter-box {
+input[type=range] {
     width: 80%;
-    max-width: 400px;
-    height: 35px;
-    margin: 0 auto;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50px;
-    overflow: hidden;
-}
-
-.meter-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #ff4da6, #ff99cc);
-    transition: width 0.2s;
-}
-
-.percent {
-    margin-top: 15px;
-    font-size: 1.4em;
+    margin-top: 40px;
 }
 
 button {
-    margin-top: 25px;
+    margin-top: 30px;
     padding: 12px 25px;
     font-size: 1.1em;
     border: none;
@@ -60,151 +34,31 @@ button {
     color: white;
     cursor: pointer;
 }
-
-button:hover {
-    transform: scale(1.05);
-}
-
-.result {
-    margin-top: 40px;
-    font-size: 1.5em;
-    display: none;
-}
-
-.dark-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-}
-
-.sparkle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: float 6s linear infinite;
-}
-
-@keyframes float {
-    from { transform: translateY(100vh); }
-    to { transform: translateY(-10vh); }
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Letter A 💕</h1>
-    <h2>A True Love Meter</h2>
+<h1>Letter A 💕</h1>
+<h2>A True Love Meter</h2>
 
-    <div class="meter-box">
-        <div class="meter-fill" id="meter"></div>
-    </div>
+<p>Before we scan anything...</p>
+<p>Guess how much I love you 💜</p>
 
-    <div class="percent" id="percentText">0%</div>
+<input type="range" min="0" max="100" value="50" id="loveGuess">
+<div id="guessValue">50%</div>
 
-    <button onclick="startMeter()">Scan True Love 💖</button>
-
-    <div class="result" id="resultText"></div>
-
-    <div id="guessSection" style="display:none; margin-top:40px;">
-        <h3>Now you try 💜</h3>
-        <p>Guess how much I love you:</p>
-        <input type="range" min="0" max="100" value="50" id="loveGuess" style="width:80%;">
-        <div id="guessValue">50%</div>
-        <button onclick="checkGuess()">Submit Guess</button>
-        <div id="guessResult" style="margin-top:20px; font-size:1.3em;"></div>
-    </div>
-
-    <button id="replayBtn" onclick="location.reload()" style="display:none;">Replay 💕</button>
-</div>
-
-<div class="dark-overlay" id="overlay">SYSTEM ERROR...</div>
+<button onclick="saveGuess()">Lock In Guess 💖</button>
 
 <script>
-let percent = 0;
-let running = false;
-
-function startMeter() {
-    if (running) return;
-    running = true;
-
-    let meter = document.getElementById("meter");
-    let text = document.getElementById("percentText");
-    let result = document.getElementById("resultText");
-    let overlay = document.getElementById("overlay");
-
-    let interval = setInterval(function() {
-        percent += Math.floor(Math.random() * 7) + 5;
-
-        if (percent >= 100) {
-            percent = 100;
-            clearInterval(interval);
-
-            overlay.style.display = "flex";
-
-            setTimeout(function() {
-                overlay.innerHTML = "TRUE LOVE OVERLOAD...";
-            }, 800);
-
-            setTimeout(function() {
-                overlay.style.display = "none";
-                text.innerHTML = "∞%";
-                meter.style.width = "100%";
-                typeMessage("Result: Infinity. No limits. No conditions. Just us.", result);
-                document.getElementById("guessSection").style.display = "block";
-                document.getElementById("replayBtn").style.display = "inline-block";
-            }, 2000);
-        }
-
-        meter.style.width = percent + "%";
-        text.innerHTML = percent + "%";
-
-    }, 200);
-}
-
-function typeMessage(message, element) {
-    element.style.display = "block";
-    element.innerHTML = "";
-    let i = 0;
-    let typing = setInterval(function() {
-        element.innerHTML += message.charAt(i);
-        i++;
-        if (i >= message.length) clearInterval(typing);
-    }, 40);
-}
-
 let slider = document.getElementById("loveGuess");
 slider.oninput = function() {
     document.getElementById("guessValue").innerHTML = this.value + "%";
 }
 
-function checkGuess() {
-    let guess = slider.value;
-    let output = document.getElementById("guessResult");
-
-    if (guess < 100) {
-        output.innerHTML = "That's cute... but it's way more than that 💜";
-    } else {
-        output.innerHTML = "You thought 100%? Try Infinity ♾️";
-    }
-}
-</script>
-
-<script>
-for (let i = 0; i < 40; i++) {
-    let sparkle = document.createElement("div");
-    sparkle.className = "sparkle";
-    sparkle.style.left = Math.random() * 100 + "vw";
-    sparkle.style.animationDuration = (Math.random() * 5 + 5) + "s";
-    document.body.appendChild(sparkle);
+function saveGuess() {
+    localStorage.setItem("loveGuess", slider.value);
+    window.location.href = "scan.html";
 }
 </script>
 
