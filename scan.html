@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scanning...</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #6b21a8, #ec4899);
+    color: white;
+    padding-top: 80px;
+}
+
+.meter-box {
+    width: 80%;
+    max-width: 400px;
+    height: 35px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff4da6, #ff99cc);
+    transition: width 0.2s;
+}
+
+.percent {
+    font-size: 1.4em;
+}
+
+.result {
+    margin-top: 40px;
+    font-size: 1.5em;
+    display: none;
+}
+
+button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 40px;
+    background: #ff4da6;
+    color: white;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Scanning True Love 💖</h1>
+
+<div class="meter-box">
+    <div class="meter-fill" id="meter"></div>
+</div>
+
+<div class="percent" id="percentText">0%</div>
+
+<div class="result" id="resultText"></div>
+
+<button id="replayBtn" onclick="window.location.href='index.html'" style="display:none;">
+Replay 💕
+</button>
+
+<script>
+let percent = 0;
+let guess = localStorage.getItem("loveGuess");
+
+let meter = document.getElementById("meter");
+let text = document.getElementById("percentText");
+let result = document.getElementById("resultText");
+let replay = document.getElementById("replayBtn");
+
+let interval = setInterval(function() {
+    percent += Math.floor(Math.random() * 7) + 5;
+
+    if (percent >= 100) {
+        percent = 100;
+        clearInterval(interval);
+
+        setTimeout(function() {
+            text.innerHTML = "∞%";
+            meter.style.width = "100%";
+            revealResult();
+        }, 800);
+    }
+
+    meter.style.width = percent + "%";
+    text.innerHTML = percent + "%";
+
+}, 200);
+
+function revealResult() {
+    result.style.display = "block";
+
+    if (guess < 100) {
+        result.innerHTML =
+        "You guessed " + guess + "% 💜<br><br>" +
+        "That's cute... but it's way more than that.<br><br>" +
+        "Real Answer: ∞% ♾️";
+    } else {
+        result.innerHTML =
+        "You guessed 100% 💕<br><br>" +
+        "You thought that was the max?<br><br>" +
+        "Real Answer: ∞% ♾️";
+    }
+
+    replay.style.display = "inline-block";
+}
+</script>
+
+</body>
+</html>
