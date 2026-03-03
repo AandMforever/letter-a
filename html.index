@@ -3,37 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Letter A 💜</title>
+<title>Letter A - A True Love Meter</title>
 
 <style>
 body {
     margin: 0;
-    background: linear-gradient(135deg, #6b21a8, #ec4899);
-    font-family: "Comic Sans MS", cursive;
+    font-family: Arial, sans-serif;
     text-align: center;
+    background: linear-gradient(135deg, #7e22ce, #ec4899);
     color: white;
-    overflow: hidden;
+}
+
+.container {
+    padding: 60px 20px;
 }
 
 h1 {
-    margin-top: 60px;
     font-size: 3em;
+    margin-bottom: 10px;
 }
 
 h2 {
     font-weight: normal;
-    opacity: 0.9;
+    margin-bottom: 40px;
 }
 
-.meter-container {
+.meter-box {
     width: 80%;
-    max-width: 450px;
-    height: 40px;
+    max-width: 400px;
+    height: 35px;
+    margin: 0 auto;
     background: rgba(255,255,255,0.3);
     border-radius: 50px;
-    margin: 40px auto;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(255,255,255,0.6);
 }
 
 .meter-fill {
@@ -43,126 +45,85 @@ h2 {
     transition: width 0.2s;
 }
 
+.percent {
+    margin-top: 15px;
+    font-size: 1.4em;
+}
+
 button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    border-radius: 40px;
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 1.1em;
     border: none;
+    border-radius: 40px;
     background: #ff4da6;
     color: white;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 button:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-#percentageText {
-    font-size: 1.4em;
-    margin-top: 15px;
-}
-
-#result {
+.result {
     margin-top: 40px;
     font-size: 1.6em;
     display: none;
-    animation: pop 0.5s ease-in-out;
-}
-
-@keyframes pop {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.glitch {
-    animation: glitch 0.2s infinite;
-}
-
-@keyframes glitch {
-    0% { transform: translate(2px, 2px); }
-    25% { transform: translate(-2px, -2px); }
-    50% { transform: translate(2px, -2px); }
-    75% { transform: translate(-2px, 2px); }
-    100% { transform: translate(0, 0); }
-}
-
-.floating-heart {
-    position: absolute;
-    font-size: 20px;
-    animation: floatUp 4s linear infinite;
-}
-
-@keyframes floatUp {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-800px); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<h1>Letter A 💕</h1>
-<h2>A True Love Meter</h2>
+<div class="container">
+    <h1>Letter A 💕</h1>
+    <h2>A True Love Meter</h2>
 
-<div class="meter-container">
-    <div class="meter-fill" id="meter"></div>
+    <div class="meter-box">
+        <div class="meter-fill" id="meter"></div>
+    </div>
+
+    <div class="percent" id="percentText">0%</div>
+
+    <button onclick="startMeter()">Scan True Love 💖</button>
+
+    <div class="result" id="resultText">
+        💜 TRUE LOVE CONFIRMED 💜<br>
+        Result: ∞%<br><br>
+        No errors. Only us.
+    </div>
 </div>
 
-<div id="percentageText">0%</div>
-
-<button onclick="startScan()">Scan True Love 💖</button>
-
-<div id="result"></div>
-
 <script>
-let percentage = 0;
-let scanning = false;
+let percent = 0;
+let running = false;
 
-function startScan() {
-    if (scanning) return;
-    scanning = true;
+function startMeter() {
+    if (running) return;
+    running = true;
 
     let meter = document.getElementById("meter");
-    let result = document.getElementById("result");
-    let text = document.getElementById("percentageText");
+    let text = document.getElementById("percentText");
+    let result = document.getElementById("resultText");
 
-    let interval = setInterval(() => {
-        percentage += Math.floor(Math.random() * 8) + 3;
-        if (percentage > 100) percentage = 100;
+    let interval = setInterval(function() {
+        percent += Math.floor(Math.random() * 6) + 4;
 
-        meter.style.width = percentage + "%";
-        text.innerHTML = percentage + "%";
-
-        createHeart();
-
-        if (percentage >= 100) {
+        if (percent >= 100) {
+            percent = 100;
             clearInterval(interval);
 
-            document.body.classList.add("glitch");
-
-            setTimeout(() => {
-                document.body.classList.remove("glitch");
-                meter.style.width = "120%";
+            setTimeout(function() {
                 text.innerHTML = "∞%";
+                meter.style.width = "100%";
                 result.style.display = "block";
-                result.innerHTML = "💜 RESULT: TRUE LOVE CONFIRMED 💜<br><br>No errors detected. Only us.";
-            }, 1000);
+            }, 600);
         }
+
+        meter.style.width = percent + "%";
+        text.innerHTML = percent + "%";
+
     }, 200);
-}
-
-function createHeart() {
-    let heart = document.createElement("div");
-    heart.classList.add("floating-heart");
-    heart.innerHTML = "💗";
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.bottom = "0px";
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 4000);
 }
 </script>
 
