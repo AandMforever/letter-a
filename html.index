@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letter A 💜</title>
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #6b21a8, #ec4899);
+    font-family: "Comic Sans MS", cursive;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+h1 {
+    margin-top: 60px;
+    font-size: 3em;
+}
+
+h2 {
+    font-weight: normal;
+    opacity: 0.9;
+}
+
+.meter-container {
+    width: 80%;
+    max-width: 450px;
+    height: 40px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50px;
+    margin: 40px auto;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff4da6, #ff99cc);
+    transition: width 0.2s;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 40px;
+    border: none;
+    background: #ff4da6;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#percentageText {
+    font-size: 1.4em;
+    margin-top: 15px;
+}
+
+#result {
+    margin-top: 40px;
+    font-size: 1.6em;
+    display: none;
+    animation: pop 0.5s ease-in-out;
+}
+
+@keyframes pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.glitch {
+    animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+    0% { transform: translate(2px, 2px); }
+    25% { transform: translate(-2px, -2px); }
+    50% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, 2px); }
+    100% { transform: translate(0, 0); }
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 4s linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-800px); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Letter A 💕</h1>
+<h2>A True Love Meter</h2>
+
+<div class="meter-container">
+    <div class="meter-fill" id="meter"></div>
+</div>
+
+<div id="percentageText">0%</div>
+
+<button onclick="startScan()">Scan True Love 💖</button>
+
+<div id="result"></div>
+
+<script>
+let percentage = 0;
+let scanning = false;
+
+function startScan() {
+    if (scanning) return;
+    scanning = true;
+
+    let meter = document.getElementById("meter");
+    let result = document.getElementById("result");
+    let text = document.getElementById("percentageText");
+
+    let interval = setInterval(() => {
+        percentage += Math.floor(Math.random() * 8) + 3;
+        if (percentage > 100) percentage = 100;
+
+        meter.style.width = percentage + "%";
+        text.innerHTML = percentage + "%";
+
+        createHeart();
+
+        if (percentage >= 100) {
+            clearInterval(interval);
+
+            document.body.classList.add("glitch");
+
+            setTimeout(() => {
+                document.body.classList.remove("glitch");
+                meter.style.width = "120%";
+                text.innerHTML = "∞%";
+                result.style.display = "block";
+                result.innerHTML = "💜 RESULT: TRUE LOVE CONFIRMED 💜<br><br>No errors detected. Only us.";
+            }, 1000);
+        }
+    }, 200);
+}
+
+function createHeart() {
+    let heart = document.createElement("div");
+    heart.classList.add("floating-heart");
+    heart.innerHTML = "💗";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.bottom = "0px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 4000);
+}
+</script>
+
+</body>
+</html>
